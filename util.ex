@@ -41,6 +41,15 @@ defmodule Util do
     end
   end
 
+  def ingresar_booleano(mensaje, :boolean) do
+    valor =
+      mensaje
+      |> ingresar_texto()
+      |> String.downcase()
+
+    Enum.member?(["si", "sí", "s"], valor)
+  end
+
   def mostrar_error(mensaje) do
     IO.puts(:standard_error, mensaje)
   end

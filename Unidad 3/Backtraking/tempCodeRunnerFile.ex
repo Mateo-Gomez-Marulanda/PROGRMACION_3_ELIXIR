@@ -1,0 +1,1 @@
+  defp columna(tablero, columna), do: Enum.map(tablero, &Enum.at(&1, columna))
