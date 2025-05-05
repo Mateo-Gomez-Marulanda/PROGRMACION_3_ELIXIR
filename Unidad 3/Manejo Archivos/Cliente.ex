@@ -19,29 +19,29 @@ defmodule Cliente do
 
     altura =
       "ingresar altura"
-      |> Util.ingresar_real(:altura)
+      |> Util.ingresar_real(:real)
 
     crear(nombre, edad, altura)
   end
 
   def ingresar(mensaje, :clientes) do
-    mensaje |> ingresar([], :cliente)
+    mensaje |> ingresar([], :clientes)
   end
 
   defp ingresar(mensaje, lista, :cliente) do
     cliente =
       mensaje
-      |> ingresar_booleano(:boolean)
+      |> ingresar()
 
     nueva_lista = lista ++ [:cliente]
 
     mas_clientes =
-      "ingresar mas clientes "
-      |> Util.ingresar()
+      "ingresar mas clientes (s/n)"
+      |> Util.ingresar_booleano(:boolean)
 
-    case max_clientes do
+    case mas_clientes do
       true ->
-        mesnaje
+        mensaje
         |> ingresar(nueva_lista, :clientes)
 
       false ->
@@ -57,12 +57,33 @@ defmodule Cliente do
 
   def escribir_csv(clientes, nombre) do
     clientes
-    |> generar_mensaje_clientes(&convertir_usuario_linea_csv/1)
-    |> (&("nombre, edad , altura\n" <> &1)).()
+    |> generar_mensaje_clientes(&convertir_cliente_linea_csv/1)
+    # adiciona los títulos
+    |> (&("nombre, edad, altura\n" <> &1)).()
     |> (&File.write(nombre, &1)).()
   end
 
-  defp convertir_usuario_linea_csv(usuario) do
-    "#{usuario.nombre}, #{usuario.edad}, #{usuario.altura}"
+  defp convertir_cliente_linea_csv(cliente) do
+    "#{cliente.nombre},#{cliente.edad}, #{cliente.altura}"
+  end
+
+  def leer_csv(nombre) do
+    nombre
+    |> File.stream!()
+    # ingnora los encabezados
+    |> Stream.drop(1)
+    |> Enum.map(&convertir_cadena_clientes/1)
+  end
+
+  defp convertir_cadena_clientes(cadena) do
+    [nombre, edad, altura] =
+      cadena
+      |> String.split(",")
+      |> Enum.map(&String.trim/1)
+
+    edad = edad |> String.to_integer()
+    altura = altura |> String.to_float()
+
+    Cliente.crear(nombre, edad, altura)
   end
 end

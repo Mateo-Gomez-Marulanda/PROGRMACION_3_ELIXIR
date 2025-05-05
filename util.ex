@@ -44,7 +44,7 @@ defmodule Util do
   def ingresar_booleano(mensaje, :boolean) do
     valor =
       mensaje
-      |> ingresar_texto()
+      |> ingresar_texto(:texto)
       |> String.downcase()
 
     Enum.member?(["si", "sí", "s"], valor)
