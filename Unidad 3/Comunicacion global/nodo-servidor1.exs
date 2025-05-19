@@ -41,7 +41,7 @@ defmodule NodoServidor1 do
 
   defp procesar_mensaje({:mayusculas, msg}), do: String.upcase(msg)
 
-  defp procesar_mensaje(mensaje), do: "El mensaje \"#{mensaje}\" es desconocido"
+  defp procesar_mensaje(mensaje), do: "El mensaje \"#{mensaje}\" es desconocido."
 
   defp send_respuesta(respuesta, productor) do
     send(productor, respuesta)

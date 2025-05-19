@@ -47,7 +47,7 @@ defmodule NodoServidor2 do
     IO.puts(respuesta)
 
     send(productor, respuesta)
-  end
+     end
 end
 
 NodoServidor2.main()
